@@ -4,13 +4,24 @@ from math import sqrt
 from OpenGL.GL import *
 
 from primitives import Vertex, Vector
-from hemicube import HemiCube
 
 
 class Triangle:
-    red = 0.3
-    green = 0.3
-    blue = 0.3
+    new_reflected_red = 0.0
+    new_reflected_green = 0.0
+    new_reflected_blue = 0.0
+
+    total_red = 0.0
+    total_green = 0.0
+    total_blue = 0.0
+
+    visible_red = 0.0
+    visible_green = 0.0
+    visible_blue = 0.0
+
+    red = 0.5
+    green = 0.5
+    blue = 0.5
 
     light_red = 0.0
     light_green = 0.0
@@ -57,7 +68,8 @@ class Triangle:
         self.light_red = r
         self.light_green = g
         self.light_blue = b
-        self.is_light = True
+        if r > 0 or b > 0 or g > 0:
+            self.is_light = True
 
     def set_colour(self, r, g, b):
         self.red = r
@@ -66,7 +78,10 @@ class Triangle:
 
     def draw(self):
         glBegin(GL_TRIANGLES)
-        glColor(self.red, self.green, self.blue)
+        if self.is_light:
+            glColor(self.light_red, self.light_green, self.light_blue)
+        else:
+            glColor(self.visible_red, self.visible_green, self.visible_blue)
         glVertex3f(self.a.x, self.a.y, self.a.z)
         glVertex3f(self.b.x, self.b.y, self.b.z)
         glVertex3f(self.c.x, self.c.y, self.c.z)
@@ -138,17 +153,6 @@ class Triangle:
         if ff < 0:
             print("ff<0")
             return 0.0
-
-        return ff
-
-    def form_factor_by2(self, patch):
-        center = self.center
-        normal = self.normal
-        u = self.a.diff(self.b).to_vector().vector_normalize()
-        r = u.vector_with_normal(normal)
-        hemicube = HemiCube(10)
-        ff = 0
-        ff += hemicube.ff_on_one_side(center, True)
 
         return ff
 

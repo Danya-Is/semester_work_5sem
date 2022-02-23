@@ -7,9 +7,9 @@ from OpenGL.GLUT import *
 from scene import Scene
 
 scene = Scene()
-viewpoint_x = 24
+viewpoint_x = 12
 viewpoint_y = 6
-viewpoint_z = 12
+viewpoint_z = -12
 look_at_x = 0
 look_at_y = 0
 look_at_z = 0
@@ -28,6 +28,7 @@ def init(width, height):
     glClearColor(0.0, 0.0, 0.0, 0.0)
     glDepthFunc(GL_LESS)
     glEnable(GL_DEPTH_TEST)
+    glEnable(GL_FRAMEBUFFER_SRGB)
     glShadeModel(GL_SMOOTH)
 
     # glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
@@ -87,33 +88,35 @@ def key_listener(*args):
     key = args[0]
     speed = 0.4
 
-    if key == '\033':
+    if key == b'\033':
         glutDestroyWindow(window_id)
         sys.exit()
-    if key == '\161':  # q
+    if key == b'\161':  # q
         viewpoint_x = viewpoint_x + speed
-    if key == '\141':  # a
+    if key == b'\141':  # a
         viewpoint_x = viewpoint_x - speed
-    if key == '\167':  # w
+    if key == b'\167':  # w
         viewpoint_y = viewpoint_y + speed
-    if key == '\163':  # s
+    if key == b'\163':  # s
         viewpoint_y = viewpoint_y - speed
-    if key == '\145':  # e
+    if key == b'\145':  # e
         viewpoint_z = viewpoint_z + speed
-    if key == '\144':  # d
+    if key == b'\144':  # d
         viewpoint_z = viewpoint_z - speed
-    if key == '\165':  # u
+    if key == b'\165':  # u
         look_at_x = look_at_x + speed
-    if key == '\152':  # j
+    if key == b'\152':  # j
         look_at_x = look_at_x - speed
-    if key == '\151':  # i
+    if key == b'\151':  # i
         look_at_y = look_at_y + speed
-    if key == '\153':  # k
+    if key == b'\153':  # k
         look_at_y = look_at_y - speed
-    if key == '\157':  # o
+    if key == b'\157':  # o
         look_at_z = look_at_z + speed
-    if key == '\154':  # l
-        look_at_z = look_at_z - speed
+    if key == b'\154':  # l
+        scene.radiosity()
+    if key == b'+':
+        scene.radiosity()
 
 if __name__ == '__main__':
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
