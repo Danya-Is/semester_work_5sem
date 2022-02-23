@@ -3,7 +3,7 @@ from primitives import Vertex
 
 from OpenGL.GLUT import *
 
-max_patch_edge = 1.0
+max_patch_edge = 2
 light_constant = 20
 
 
